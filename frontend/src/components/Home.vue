@@ -8,18 +8,78 @@ const user = ref({
   avatar: ''
 })
 
+// GLOBAL SELECTED ITEM - is the item that is currently selected in the explore section (reviews, games, etc.)
+// it will be shown in the header
+
+const selectedItem = ref({
+  type: '',
+  item: null,
+});
+
+function setSelectedItem(type, item) {
+  selectedItem.value = { type, item };
+}
+
 // REVIEWS
 const reviews = ref([
   {
     id: 1,
     game: {
       title: 'The Witcher 3: Wild Hunt',
+      image: "",
       description: 'The Witch'
     },
-    user: 'John Doe',
-    rating: 5
+    user: 'reloia',
+    rating: 5,
+    selected: false,
+  },
+  {
+    id: 2,
+    game: {
+      title: 'The Witcher 3: Wild Hunt',
+      image: "",
+      description: 'The Witch'
+    },
+    user: 'reloia',
+    rating: 5,
+    selected: false,
   },
 ]);
+
+function setSelectedReview(review) {
+  setSelectedItem('reviews', review);
+  reviews.value.forEach(r => r.selected = r.id === review.id);
+}
+
+// setting the first review as selected by default
+reviews.value[0].selected = true;
+
+// GAMES
+
+const games = ref([
+  {
+    id: 1,
+    title: 'The Witcher 3: Wild Hunt',
+    description: 'The Witcher 3: Wild Hunt is a story-driven, next-generation open world role-playing game set in a visually stunning fantasy universe full of meaningful choices and impactful consequences. In The Witcher, you play as Geralt of Rivia, a monster hunter tasked with finding a child from an ancient prophecy.',
+    image: "",
+    selected: false,
+  },
+  {
+    id: 2,
+    title: 'The Witcher 3: Wild Hunt',
+    description: 'The Witcher 3: Wild Hunt is a story-driven, next-generation open world role-playing game set in a visually stunning fantasy universe full of meaningful choices and impactful consequences. In The Witcher, you play as Geralt of Rivia, a monster hunter tasked with finding a child from an ancient prophecy.',
+    image: "",
+    selected: false,
+  },
+]);
+
+function setSelectedGame(game) {
+  setSelectedItem('games', game);
+  games.value.forEach(g => g.selected = g.id === game.id);
+}
+
+// setting the first game as selected by default
+games.value[0].selected = true;
 
 </script>
 
@@ -35,7 +95,13 @@ const reviews = ref([
   <div class="explore" data-type="reviews">
     <span>Recent Reviews</span>
     <div class="container">
-      <ExploreItem v-for="review in reviews" :key="review.id" :game="review.game" :type="'reviews'" :review="review" />
+      <ExploreItem v-for="review in reviews" :setSelected="setSelectedReview" :selected="review.selected" :key="review.id" :game="review.game" :type="'reviews'" :review="review" />
+    </div>
+  </div>
+  <div class="explore" data-type="games">
+    <span>Popular Games</span>
+    <div class="container">
+      <ExploreItem v-for="game in games" :setSelected="setSelectedGame" :selected="game.selected" :key="game.id" :game="game" :type="'games'" />
     </div>
   </div>
 </template>
@@ -54,7 +120,7 @@ const reviews = ref([
   background: rgba(217, 217, 217, 0.12);
 
   margin-inline: auto;
-  margin-top: 40px;
+  margin-block: 20px;
 
   & > h3 {
     font-size: 1.7rem;
@@ -84,7 +150,7 @@ const reviews = ref([
 }
 
 .explore {
-  margin-top: 40px;
+  padding: 10px;
 
   & > span {
     font-size: 1.5rem;
@@ -95,7 +161,10 @@ const reviews = ref([
   & > .container {
     display: flex;
     flex-direction: row;
+    align-items: flex-end;
     overflow: hidden;
+
+    gap: 20px;
   }
 }
 

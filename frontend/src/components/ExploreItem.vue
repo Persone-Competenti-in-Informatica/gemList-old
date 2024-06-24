@@ -18,18 +18,28 @@ export default {
     review: {
       type: Object,
       required: false,
+      default: null
+    },
+    selected: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+    setSelected: {
+      type: Function,
+      required: true,
     }
   },
 }
 </script>
 
 <template>
-  <div class="explore-item">
-    <img src="https://via.placeholder.com/150" alt="Game Cover" />
+  <div class="explore-item" :class="{ selected }" @click="setSelected( type === 'reviews' ? review : game )">
+    <img :src="game.image" alt="Game Image" />
     <div class="info">
       <h3>{{ game.title }}</h3>
-      <p>{{ type === 'reviews' ? review.user : game.description }}</p>
-      <div v-if="review.user" class="stars">
+      <p v-if="review">{{ review.user }}</p>
+      <div v-if="review" class="stars">
         <svg-icon v-for="i in 5" type="mdi" :path="mdiStar" />
       </div>
     </div>
@@ -39,8 +49,22 @@ export default {
 
 <style scoped>
   .explore-item {
-    width: 200px;
-    height: 200px;
+    width: 170px;
+    height: 170px;
+    cursor: pointer;
+
+    &.selected {
+      width: 200px;
+      height: 200px;
+
+      & > .info > h3 {
+        font-size: 1.2rem;
+      }
+    }
+
+    &:hover {
+      outline: 4px solid #fff;
+    }
 
     position: relative;
 
@@ -58,7 +82,7 @@ export default {
       padding: 3px;
 
       & > h3 {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: bold;
         margin: 0;
       }
