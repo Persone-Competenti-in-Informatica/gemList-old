@@ -3,9 +3,11 @@
   line-height: 1.5;
   font-weight: 400;
 
+  --primary: #2F1212;
+
   color-scheme: light dark;
   color: #FFF;
-  background-color: #2F1212;
+  background-color: var(--primary);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;

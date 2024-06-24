@@ -1,6 +1,16 @@
 <script setup>
 import '@jamescoyle/svg-icon'
 import { mdiMenu, mdiClose, mdiMagnify, mdiCog } from "@mdi/js";
+
+import { ref } from 'vue'
+
+const menuState = ref(false)
+
+const user = ref({
+  name: '',
+  avatar: ''
+})
+
 </script>
 
 <template>
@@ -15,7 +25,7 @@ import { mdiMenu, mdiClose, mdiMagnify, mdiCog } from "@mdi/js";
         <svg-icon type="mdi" :path="mdiMagnify" />
       </button>
       <button class="user">
-        <img src="https://avatars.githubusercontent.com/u/47269261?v=4" alt="User Avatar" />
+        <img :src="user.avatar || ''" alt="User Avatar" />
       </button>
       <a tabindex="0" class="has-icon button" style="scale: 1.3; display: inline-block">
         <svg-icon type="mdi" :path="mdiCog" />
@@ -26,16 +36,6 @@ import { mdiMenu, mdiClose, mdiMagnify, mdiCog } from "@mdi/js";
     <router-view />
   </main>
 </template>
-
-<script>
-export default {
-  data() {
-    return {
-      menuState: false,
-    }
-  }
-}
-</script>
 
 <style scoped>
 header {
