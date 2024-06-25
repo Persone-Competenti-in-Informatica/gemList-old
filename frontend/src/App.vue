@@ -53,6 +53,16 @@ const selectedItem = ref({
       <h3>{{ selectedItem.item.game.title }}</h3>
     </div>
   </header>
+  <left-menu :class="{ expanded: menuState }">
+    <router-link to="/">gemList</router-link>
+    <router-link to="/">Home</router-link>
+    <router-link to="/explore">Explore</router-link>
+    <router-link to="/calendar">Calendar</router-link>
+    <divider />
+    <router-link to="/library">Library</router-link>
+    <router-link to="/community">Community</router-link>
+    <router-link to="/friends">Friends</router-link>
+  </left-menu>
   <main>
     <router-view />
   </main>
@@ -135,6 +145,7 @@ header {
       background-size: cover;
       background-position: center;
       filter: brightness(0.3) blur(24px);
+      transform: scale(1.1);
 
       z-index: -1;
     }
@@ -146,7 +157,7 @@ header {
       left: 50%;
       transform: translateX(-50%);
       width: 100%;
-      max-width: min(90%, 900px);
+      max-width: 80%;
       height: 1px;
       background-color: #fff;
       z-index: 1;
@@ -168,6 +179,97 @@ header {
       }
     }
   }
+}
 
+main {
+  max-width: 1200px;
+  margin-inline: auto;
+}
+
+left-menu {
+  display: block;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+
+  width: 100%;
+  max-width: 320px;
+
+  height: calc(100% - 80px);
+  margin-top: auto;
+
+  background-color: rgba(217, 217, 217, 0.24);
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: .8s all;
+
+  backdrop-filter: blur(10px);
+
+  transform: translateX(-100%);
+
+  &.expanded {
+    transform: translateX(0);
+  }
+
+  & > a {
+    display: block;
+    padding: 1rem 2rem;
+
+    width: 100%;
+
+    text-decoration: none;
+
+    box-sizing: border-box;
+
+    position: relative;
+
+    &:first-of-type {
+      text-align: center;
+      letter-spacing: 2px;
+      font-weight: bold;
+      font-size: 1.1rem;
+
+      margin-bottom: 10px;
+
+      &:after {
+        content: '';
+        display: block;
+        width: 60%;
+        height: 1px;
+        background-color: #000;
+
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+
+    &:not(:first-of-type) {
+      transition: .2s all;
+
+      &.router-link-active {
+        background-color: #D9D9D9;
+        color: #000;
+        font-weight: bold;
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  & > divider {
+    display: block;
+    height: 1px;
+    width: 60%;
+    margin-inline: auto;
+
+    background: black;
+  }
 }
 </style>
