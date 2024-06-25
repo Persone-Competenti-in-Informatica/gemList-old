@@ -1,35 +1,30 @@
 <script setup>
 import '@jamescoyle/svg-icon'
-import { mdiMenu, mdiClose, mdiMagnify, mdiCog } from "@mdi/js";
+import { mdiMenu, mdiClose, mdiMagnify, mdiCog, mdiHeartPlus } from "@mdi/js";
 
-import { ref } from 'vue'
+import {ref} from 'vue'
 
 const menuState = ref(false)
+const searchState = ref(false)
 
 const user = ref({
   name: '',
   avatar: ''
 })
 
-// TODO: remove after tests
-const selectedItem = ref({
-  type: 'reviews',
-  item: {
-    id: 1,
-    game: {
-      title: 'The Witcher 3: Wild Hunt',
-      image: "https://avatars.githubusercontent.com/u/37927709?v=4",
-      description: 'The Witch'
-    },
-    user: 'reloia',
-    rating: 5,
-    selected: false,
-  }
-});
+// TODO: remove after and transform into a vuex element
+const headerOptions = ref({
+  expanded: true,
+  backgroundImage: '',
+  title: 'asfs',
+  description: 'asf',
+  type: 'game-page'
+})
+
 </script>
 
 <template>
-  <header :class="{ expanded: selectedItem.type }">
+  <header :class="{ expanded: headerOptions.expanded, menuOpen: menuState }">
     <div class="content">
       <button class="has-icon" style="scale: 1.7;" @click="menuState = !menuState">
         <svg-icon v-if="!menuState" type="mdi" :path="mdiMenu" />
@@ -37,9 +32,19 @@ const selectedItem = ref({
       </button>
       <router-link to="/" class="title">gemList</router-link>
       <div>
-        <button class="has-icon" style="scale: 1.4;">
-          <svg-icon type="mdi" :path="mdiMagnify" />
-        </button>
+        <div class="search" :class="{ expanded: searchState }">
+          <input type="text" placeholder="Search anything" id="search" ref="search" />
+          <button class="has-icon" style="scale: 1.4;" @click="e => {
+            if (!searchState) searchState = true
+            else {
+              const searchValue = $refs.search.value
+
+              console.log(searchValue)
+            }
+          }">
+            <svg-icon type="mdi" :path="mdiMagnify" />
+          </button>
+        </div>
         <button class="user">
           <img :src="user.avatar || ''" alt="User Avatar" />
         </button>
@@ -48,9 +53,18 @@ const selectedItem = ref({
         </a>
       </div>
     </div>
-    <divider v-if="selectedItem.type" />
-    <div v-if="selectedItem.type" :style="{ '--backgroundImage': 'url(' + selectedItem.item.game.image + ')' }">
-      <h3>{{ selectedItem.item.game.title }}</h3>
+    <divider v-if="headerOptions.expanded" />
+    <div v-if="headerOptions.expanded" :style="{ '--backgroundImage': 'url(' + headerOptions.backgroundImage + ')' }">
+      <h3>{{ headerOptions.title }}</h3>
+      <span v-if="headerOptions.description">{{ headerOptions.description }}</span>
+      <div v-if="headerOptions.type == 'game-page'" class="game-page-buttons">
+<!--     TODO: make functionality for add button   -->
+        <button>Add</button>
+        <button>
+          <svg-icon type="mdi" :path="mdiHeartPlus" />
+        </button>
+
+      </div>
     </div>
   </header>
   <left-menu :class="{ expanded: menuState }">
@@ -110,6 +124,48 @@ header {
       align-items: center;
       justify-content: center;
       gap: 18px;
+      position: relative;
+
+      & > div.search {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        left: calc(-33px - 40px);
+
+        & > input {
+          display: none;
+        }
+
+        padding: 8px;
+        margin-right: -8px;
+
+        &.expanded {
+          background: #2F1212;
+          width: 260px;
+          box-sizing: border-box;
+          left: calc(-260px - 40px + 7px);
+          border-radius: 8px;
+          padding-block: 0;
+
+          & > input {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            border: none;
+            border-radius: 8px;
+
+            background: none;
+
+
+            border: none;
+            outline: none;
+          }
+
+          & > button {
+            color: rgba(217, 217, 217, 0.24);
+          }
+        }
+      }
 
       & > .user {
         width: 34px;
@@ -123,8 +179,12 @@ header {
     }
   }
 
+  &.menuOpen {
+    border-bottom-left-radius: 0;
+  }
+
   &.expanded {
-    height: 240px;
+    height: 280px;
 
     --backgroundImage: url("https://avatars.githubusercontent.com/u/37927709?v=4");
     overflow: hidden;
@@ -173,16 +233,55 @@ header {
       align-items: baseline;
       z-index: 1;
 
+      position: relative;
+
       & > h3 {
         font-size: 1.4rem;
         font-weight: bold;
+      }
+
+      & > .game-page-buttons {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-top: 10px;
+
+        position: absolute;
+        right: 4rem;
+
+        & > button {
+          &:first-of-type {
+            color: var(--primary);
+            background: #D9D9D9;
+            height: 28px;
+            min-width: 120px;
+
+            border-radius: 10px;
+            padding: 0;
+            padding-inline: 10px;
+
+            font-size: 1.1rem;
+            font-weight: bold;
+          }
+
+          &:last-of-type {
+            color: var(--primary);
+            background: #D9D9D9;
+            width: 32px;
+            height: 32px;
+            line-height: 44px;
+            border-radius: 10px;
+
+            scale: .9;
+          }
+        }
       }
     }
   }
 }
 
 main {
-  max-width: 1200px;
+  max-width: 1400px;
   margin-inline: auto;
 }
 

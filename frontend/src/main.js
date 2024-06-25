@@ -6,8 +6,8 @@ import Home from "./components/Home.vue";
 
 const routes = [
     { path: '/', component: Home },
+    { path: '/game/:id', component: () => import('./components/Game.vue') },
 ]
-
 const router = createRouter({
     history: createWebHistory(),
     routes,
