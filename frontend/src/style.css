@@ -59,4 +59,6 @@ button {
 #app {
   /*max-width: 1480px;*/
   margin: 0 auto;
+  height: 100vh;
+  box-sizing: border-box;
 }

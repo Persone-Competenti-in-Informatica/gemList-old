@@ -3,14 +3,16 @@ import '@jamescoyle/svg-icon'
 import { mdiMenu, mdiClose, mdiMagnify, mdiCog, mdiHeartPlus } from "@mdi/js";
 
 import {ref} from 'vue'
+import {useStore} from "vuex";
+import {useRouter} from "vue-router";
+const router = useRouter();
+
+const store = useStore();
 
 const menuState = ref(false)
 const searchState = ref(false)
 
-const user = ref({
-  name: '',
-  avatar: ''
-})
+const user = store.state.user;
 
 // TODO: remove after and transform into a vuex element
 const headerOptions = ref({
@@ -20,6 +22,14 @@ const headerOptions = ref({
   description: 'asf',
   type: 'game-page'
 })
+
+function profileClick() {
+  if (user.username) {
+    router.push('/profile')
+  } else {
+    router.push('/login')
+  }
+}
 
 </script>
 
@@ -45,8 +55,8 @@ const headerOptions = ref({
             <svg-icon type="mdi" :path="mdiMagnify" />
           </button>
         </div>
-        <button class="user">
-          <img :src="user.avatar || ''" alt="User Avatar" />
+        <button class="user" :title="user.username || 'Login'" @click="profileClick">
+          <img :src="user.pfp || ''" alt="User Avatar" />
         </button>
         <a tabindex="0" class="has-icon button" style="scale: 1.3; display: inline-block">
           <svg-icon type="mdi" :path="mdiCog" />
