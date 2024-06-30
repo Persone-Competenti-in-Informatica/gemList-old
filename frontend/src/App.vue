@@ -54,7 +54,7 @@ const headerOptions = ref({
       </div>
     </div>
     <divider v-if="headerOptions.expanded" />
-    <div v-if="headerOptions.expanded" :style="{ '--backgroundImage': 'url(' + headerOptions.backgroundImage + ')' }">
+    <div class="header-info" v-if="headerOptions.expanded" :style="{ '--backgroundImage': 'url(' + headerOptions.backgroundImage + ')' }">
       <h3>{{ headerOptions.title }}</h3>
       <span v-if="headerOptions.description">{{ headerOptions.description }}</span>
       <div v-if="headerOptions.type == 'game-page'" class="game-page-buttons">
@@ -223,7 +223,7 @@ header {
       z-index: 1;
     }
 
-    & > div:nth-child(3) {
+    & > div.header-info {
       padding: 1rem 4rem;
 
       margin-top: auto;
@@ -234,6 +234,8 @@ header {
       z-index: 1;
 
       position: relative;
+      width: 1200px;
+      margin-inline: auto;
 
       & > h3 {
         font-size: 1.4rem;

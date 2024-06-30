@@ -1,40 +1,51 @@
 <script setup>
 import { ref } from 'vue'
 import { mdiStar } from '@mdi/js'
-</script>
+import { useRouter } from "vue-router";
+const router = useRouter();
 
-<script>
-export default {
-  name: "ExploreItem",
-  props: {
-    game: {
-      type: Object,
-      required: true,
-    },
-    type: {
-      type: String,
-      required: true,
-    },
-    review: {
-      type: Object,
-      required: false,
-      default: null
-    },
-    selected: {
-      type: Boolean,
-      required: false,
-      default: false,
-    },
-    setSelected: {
-      type: Function,
-      required: true,
-    }
+const props = defineProps({
+  game: {
+    type: Object,
+    required: true,
   },
+  type: {
+    type: String,
+    required: true,
+  },
+  review: {
+    type: Object,
+    required: false,
+    default: null
+  },
+  selected: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+  setSelected: {
+    type: Function,
+    required: true,
+  }
+})
+
+const game = props.game;
+const type = props.type;
+const review = props.review;
+const selected = props.selected;
+const setSelected = props.setSelected;
+
+
+// <!-- TODO: change the click to make it change the page to /game/id -->
+function exploreClickEvent() {
+  router.push(`/game/${game.id}`);
 }
+
 </script>
 
 <template>
-  <div class="explore-item" :class="{ selected }" @click="setSelected( type === 'reviews' ? review : game )">
+<!--  TODO: add on hover and on select to change the selected item -->
+  <div class="explore-item" :class="{ selected }" @click="exploreClickEvent">
     <img :src="game.image" alt="Game Image" />
     <div class="info">
       <h3>{{ game.title }}</h3>
