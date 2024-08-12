@@ -64,7 +64,7 @@ function profileClick() {
       </div>
     </div>
     <divider v-if="headerOptions.expanded" />
-    <div class="header-info" v-if="headerOptions.expanded" :style="{ '--backgroundImage': 'url(' + headerOptions.backgroundImage + ')' }">
+    <div class="header-info" :class="{'game-page': headerOptions.type == 'game-page'}" v-if="headerOptions.expanded" :style="{ '--backgroundImage': 'url(' + headerOptions.backgroundImage + ')' }">
       <h3>{{ headerOptions.title }}</h3>
       <span v-if="headerOptions.description">{{ headerOptions.description }}</span>
       <div v-if="headerOptions.type == 'game-page'" class="game-page-buttons">
@@ -246,6 +246,10 @@ header {
       position: relative;
       width: 1200px;
       margin-inline: auto;
+
+      &.game-page {
+        padding-left: 260px;
+      }
 
       & > h3 {
         font-size: 1.4rem;
